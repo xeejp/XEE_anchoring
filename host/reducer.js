@@ -13,8 +13,7 @@ const reducer = concatenateReducers([
       participants: Object.assign({}, participants, {[id]: participant}), answered: answered}),
     'reset': (_, { payload: {participants, joined, answered} }) => ({
       participants: participants, joined: joined, answered: answered }),
-    'result': (_, { payload: {oneone, onetwo, twoone, twotwo} }) => ({
-      oneone: oneone, onetwo: onetwo, twoone:twoone, twotwo: twotwo, answered: 0 }),
+    'result': (_, { payload }) => ({ answered: 0 }),
     'qupdate': (_, { payload }) => ({ question_text: payload }),
   }, {}),
   handleAction('update contents', () => ({ loading: false }), { loading: true })

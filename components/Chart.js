@@ -18,7 +18,7 @@ class Chart extends Component {
   }
   
   render() {
-    const { oneone, onetwo, twoone, twotwo, question_text } = this.props
+    const { data, question_text } = this.props
     return (
     <Card
       expanded={this.state.expanded}
@@ -30,84 +30,69 @@ class Chart extends Component {
         showExpandableButton={true}
       />
       <CardText expandable={true}>
-        <span>
-          {(oneone + onetwo != 0)?
             <Highcharts
               config={{
-                  chart: {
-                    type: 'pie'
-                  },
-                  credits : {
-                    enabled: false,
-                  },
-                  title: {
-                    text: 'はじめの質問で' + question_text["question1"].title[0] + 'を選んだ人'
-                  },
-                  plotOptions: {
-                      pie: {
-                          dataLabels: {
-                              distance: -30,
-                              format: '{point.y:.0f}人'
-                          },
-                          showInLegend: true
-                     }
-                  },
-                  
-                  tooltip: {
-                    headerFormat: '<span>{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}人</b><br/>'
-                  },
-                  series: [{
-                    name: '回答',
-                    colorByPoint: true,
-                    data: [{
-                      name: '次の質問で' + question_text["question2"].title[0] + 'を選んだ人',
-                      y: oneone,
-                    }, {
-                       name: '次の質問で' + question_text["question2"].title[1] + 'を選んだ人',
-                       y: onetwo,
-                    }]
-                  }]
-             }} /> : <p>はじめの質問で{question_text["question1"].title[0]}を選んだ人はいませんでした。</p>}
-          {(twoone + twotwo != 0)?
-            <Highcharts
-              config={{
-                  chart: {
-                    type: 'pie'
-                  },
-                  credits : {
-                    enabled: false,
-                  },
-                  title: {
-                    text: 'はじめの質問で' + question_text["question1"].title[1] + 'を選んだ人'
-                  },
-                  plotOptions: {
-                      pie: {
-                          dataLabels: {
-                              distance: -30,
-                              format: '{point.y:.0f}人'
-                          },
-                          showInLegend: true
-                     }
-                  },  
-    
-                  tooltip: {
-                     headerFormat: '<span>{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}人</b> <br/>'
-                  },
-                  series: [{
-                     name: '回答',
-                   colorByPoint: true,
-                   data: [{
-                       name: '次の質問で' + question_text["question2"].title[1] + 'を選んだ人',
-                       y: twotwo,
-                      }, {
-                       name: '次の質問で' + question_text["question2"].title[0] + 'を選んだ人',
-                       y: twoone,
-                   }]
-                  }]
-             }} /> : <p>はじめの質問で{question_text["question1"].title[1]}を選んだ人はいませんでした。</p>}
-        </span>
+        chart: {
+            type: 'scatter',
+            zoomType: 'xy'
+        },
+        title: {
+            text: '実験結果'
+        },
+        xAxis: {
+            title: {
+                enabled: true,
+                text: '初期位置 [' + question_text['unit'] + ']'
+            },
+            startOnTick: true,
+            endOnTick: true,
+            showLastLabel: true
+        },
+        yAxis: {
+            title: {
+                text: '回答 [' + question_text['unit'] + ']'
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'left',
+            verticalAlign: 'top',
+            x: 100,
+            y: 70,
+            floating: true,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+            borderWidth: 1
+        },
+        plotOptions: {
+            scatter: {
+                marker: {
+                    radius: 5,
+                    states: {
+                        hover: {
+                            enabled: true,
+                            lineColor: 'rgb(100,100,100)'
+                        }
+                    }
+                },
+                states: {
+                    hover: {
+                        marker: {
+                            enabled: false
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{series.name}</b><br>',
+                    pointFormat: '{point.x} から {point.y}'
+                }
+            },
+       },
+        series: [{
+            name: '回答',
+            color: 'rgba(70, 70, 230, .5)',
+            data: data
+        }]
+    }} />
       </CardText>
     </Card>
   )

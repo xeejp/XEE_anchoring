@@ -1,5 +1,5 @@
-defmodule AllaisParadox.Main do
-  alias AllaisParadox.Actions
+defmodule Anchoring.Main do
+  alias Anchoring.Actions
 
   @pages ["waiting", "experiment", "result"]
   @sequence ["question1", "question2", "answered"]
@@ -13,53 +13,28 @@ defmodule AllaisParadox.Main do
       participants: %{},
       joined: 0,
       answered: 0,
-      oneone: 0,
-      onetwo: 0,
-      twoone: 0,
-      twotwo: 0,
       question_text: %{
-        'question': %{
-          text: "あなたは2回くじを引きます。それぞれのくじでは1つのオプションを選ぶことができます。",
-          question: ["", ""]
-        },
-        'question1': %{
-          text: "1回目のくじのオプションを選んでください。",
-          title: ["オプションA", "オプションB"],
-          question: [
-             "確実に100万円を手にする。", 
-            "89％の確率で100万円、10%の確率で250万円を獲得する。ただし、1%の確率で何ももらえない。"
-          ]
-        },
-        'question2': %{
-          text: "2回目のくじのオプションを選んでください。",
-          title: ["オプションA", "オプションB"],
-          question: [
-            "11%の確率で100万円を得る。",
-            "10%の確率で250万円を得る。"
-          ]
-        },
-        'answered': %{
-          text: "回答は終了しました。",
-          question: ["", ""]
-        },
+        'question': "国連でアフリカ諸国が占める割合は何％か？",
+        'answered': "回答は終了しました。",
         'waiting_text': "参加者の登録を待っています。\nこの画面のまましばらくお待ちください。",
+        'min': 0,
+        'step': 1,
+        'max': 100,
+        'unit': "%"
       },
+      result: []
     }
   end
 
   def new_participant(data) do
     %{
       question_text: data.question_text,
-      sequence: "question1",
-      question1: 0,
-      question2: 0,
+      sequence: "question",
+      sdef: -1,
+      answer: -1,
       active: true,
       joined: 1,
-      qswap: false,
-      oneone: data.oneone,
-      onetwo: data.onetwo,
-      twoone: data.twoone,
-      twotwo: data.twotwo,
+      result: []
     }
   end
 

@@ -23,125 +23,46 @@ class EditQuestion extends Component {
     this.state = {
       question_text: question_text,
       open: false,
-      slideIndex: 0,
       mainSlideIndex: 0,
+      disabled: false,
       default_text: {
-         'question': {
-          text: "あなたは2回くじを引きます。それぞれのくじでは1つのオプションを選ぶことができます。",
-          question: ["", ""]
-        },
-        'question1': {
-          text: "1回目のくじのオプションを選んでください。",
-          title: ["オプションA", "オプションB"],
-          question: [
-             "確実に100万円を手にする。", 
-            "89％の確率で100万円、10%の確率で250万円を獲得する。ただし、1%の確率で何ももらえない。"
-          ]
-        },
-        'question2': {
-          text: "2回目のくじのオプションを選んでください。",
-          title: ["オプションA", "オプションB"],
-          question: [
-            "11%の確率で100万円を得る。",
-            "10%の確率で250万円を得る。"
-          ]
-        },
-        'answered': {
-          text: "回答は終了しました。",
-          question: ["", ""]
-        },
+        'question': "国連でアフリカ諸国が占める割合は何％か？",
+        'answered': "回答は終了しました。",
         'waiting_text': "参加者の登録を待っています。\nこの画面のまましばらくお待ちください。",
+        min: 0,
+        step: 1,
+        max: 100,
+        unit: "%"
       }
     }
   }
 
   QuestionTab(){
     return (
-      <div>
+      <div style={{height: '100%', position: 'relative'}}>
         <TextField
-          hintText={"問題の説明"}
-          defaultValue={this.state.question_text["question"].text}
-          onBlur={this.handleChange.bind(this, ["question", "text"])}
-          multiLine={true}
-          fullWidth={true}
-        /><br />
-
-        <Tabs
-          onChange={this.handleSlide.bind(this)}
-          value={this.state.slideIndex}
-        >
-          <Tab label="1問目" value={0} style={{color: '#000000', background: '#CCCCCC'}} />
-          <Tab label="2問目" value={1} style={{color: '#000000', background: '#CCCCCC'}} />
-        </Tabs>
-        <SwipeableViews
-          index={this.state.slideIndex}
-          onChangeIndex={this.handleSlide.bind(this)}
-        >
-          <div>
-            <TextField
-              hintText={"1問目の詳細"}
-              defaultValue={this.state.question_text["question1"].text}
-              onBlur={this.handleChange.bind(this, ["question1", "text"])}
-              multiLine={true}
-             fullWidth={true}
-            /><br />
-           <TextField
-             hintText={this.state.default_text["question1"].title[0]}
-             defaultValue={this.state.question_text["question1"].title[0]}
-             onBlur={this.handleChange.bind(this, ["question1", "title", 0])}
-             multiLine={true}
-           />:<TextField
-              hintText={this.state.default_text["question1"].title[0] + "の詳細"}
-              defaultValue={this.state.question_text["question1"].question[0]}
-              onBlur={this.handleChange.bind(this, ["question1", "question", 0])}
-              multiLine={true}
-           /><br />
+         hintText={"問題"}
+         defaultValue={this.state.question_text["question"]}
+         onBlur={this.handleChange.bind(this, ["question"])}
+         multiLine={true}
+         fullWidth={true}
+       /><br />
+       <p>スライダーの設定</p><br />
         <TextField
-              hintText={this.state.default_text["question1"].title[1]}
-             defaultValue={this.state.question_text["question1"].title[1]}
-             onBlur={this.handleChange.bind(this, ["question1", "title", 1])}
-             multiLine={true}
-            />:<TextField
-               hintText={this.state.default_text["question1"].title[1] + "の詳細"}
-               defaultValue={this.state.question_text["question1"].question[1]}
-               onBlur={this.handleChange.bind(this, ["question1", "question", 1])}
-               multiLine={true}
-            /><br />
-          </div>
-
-          <div>
-            <TextField
-              hintText={"2問目の詳細"}
-              defaultValue={this.state.question_text["question2"].text}
-              onBlur={this.handleChange.bind(this, ["question2", "text"])}
-              multiLine={true}
-              fullWidth={true}
-             /><br />
-             <TextField
-              hintText={this.state.default_text["question2"].title[0]}
-              defaultValue={this.state.question_text["question2"].title[0]}
-              onBlur={this.handleChange.bind(this, ["question2", "title", 0])}
-               multiLine={true}
-            />:<TextField
-              hintText={this.state.default_text["question2"].title[0] + "の詳細"}
-              defaultValue={this.state.question_text["question2"].question[0]}
-              onBlur={this.handleChange.bind(this, ["question2", "question", 0])}
-              multiLine={true}
-            /><br />
-             <TextField
-               hintText={this.state.default_text["question2"].title[1]}
-               defaultValue={this.state.question_text["question2"].title[1]}
-               onBlur={this.handleChange.bind(this, ["question2", "title", 1])}
-                multiLine={true}
-             />:<TextField
-               hintText={this.state.default_text["question2"].title[0] + "の詳細"}
-               defaultValue={this.state.question_text["question2"].question[1]}
-               onBlur={this.handleChange.bind(this, ["question2", "question", 1])}
-               multiLine={true}
-             /><br />
-          </div>
-        </SwipeableViews>
-        </div>
+         hintText={"最小値"}
+         defaultValue={this.state.question_text["min"]}
+         onChange={this.handleChangeOnlyNum.bind(this, ["min"])}
+       /> から <TextField
+         hintText={"最大値"}
+         defaultValue={this.state.question_text["max"]}
+         onChange={this.handleChangeOnlyNum.bind(this, ["max"])}
+       /> まで<br />
+       (単位:<TextField
+         hintText={"単位"}
+         defaultValue={this.state.question_text["unit"]}
+         onChange={this.handleChange.bind(this, ["unit"])}
+       />)
+      </div>
     )
   }
 
@@ -154,7 +75,6 @@ class EditQuestion extends Component {
          onBlur={this.handleChange.bind(this, ["waiting_text"])}
          multiLine={true}
          fullWidth={true}
-         style={{height: 1000}}
        />
       </div>
     )
@@ -165,7 +85,7 @@ class EditQuestion extends Component {
   }
 
   handleClose() {
-    this.setState({ open: false })
+    this.setState({ open: false, disabled: false })
   }
 
   handleChange(value, event){
@@ -178,10 +98,23 @@ class EditQuestion extends Component {
     this.setState({ question_text: question_text })
   }
 
-  handleSlide(value) {
-    this.setState({
-      slideIndex: value
-    })
+  handleChangeOnlyNum(value, event){
+    if(isNaN(event.target.value) || event.target.value.indexOf('.') != -1) {
+      this.setState({ disabled: true })
+      return
+    }
+    var question_text = Object.assign({}, this.state.question_text)
+    var temp1 = question_text
+    for(var i = 0; i < value.length - 1; i++){
+      temp1 = temp1[value[i]]
+    }
+    var temp2 = parseInt(temp1[value[value.length - 1]])
+    temp1[value[value.length - 1]] = parseInt(event.target.value)
+    this.setState({ question_text: question_text, disabled: false })
+    if(parseInt(question_text.min) >= parseInt(question_text.max)){
+      temp1[value[value.length - 1]] = temp2
+      this.setState({ question_text: question_text, disabled: true })
+    }
   }
 
   handleMainSlide(value){
@@ -199,7 +132,7 @@ class EditQuestion extends Component {
   reset(){
     const { dispatch } = this.props
     dispatch(updateQuestion(this.state.default_text))
-    this.setState({ question_text: this.state.default_text, open: false})
+    this.setState({ question_text: this.state.default_text, open: false, disabled: false })
   }
 
   render(){
@@ -207,6 +140,7 @@ class EditQuestion extends Component {
     const actions = [
       <FlatButton
         label="適用"
+        disabled={this.state.disabled}
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.submit.bind(this)}

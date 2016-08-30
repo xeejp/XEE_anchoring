@@ -1,73 +1,84 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton'
+import Slider from 'material-ui/Slider'
+import Chip from 'material-ui/Chip'
 import RaisedButton from 'material-ui/RaisedButton'
-import SwipeableViews from 'react-swipeable-views'
 
-import { nextQuestion } from './actions'
+import { answer } from './actions'
 
-const mapStateToProps = ({ sequence, qswap, question_text }) => ({
-  sequence, qswap, question_text
+const mapStateToProps = ({ sequence, qswap, question_text, sdef }) => ({
+  sequence, question_text, sdef
 })
 
 class Experiment extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      slideIndex: 0
-    }
+    const { sdef } = this.props
+    this.state = { value: sdef }
   }
 
-  next(value) {
+  handleChange(event, value){
+    this.setState({ value: value })
+  }
+
+ submit() {
     const{ dispatch } = this.props
-    dispatch(nextQuestion(value))
-    this.setState({
-      slideIndex: 1
-    })
+    dispatch(answer(this.state.value))
   }
   
+  add(num){
+    this.setState({
+      value: this.state.value + num
+    })
+  }
+
   render() {
-    const { sequence, qswap, question_text } = this.props
+    const { sequence, question_text } = this.props
     const Question = question_text["question"]
     const Text = question_text[sequence]
     return (sequence != "answered")?
       <div style={{height: 'auto'}}>
-        <h5>{Question.text}</h5>
-        <SwipeableViews index={this.state.slideIndex} disabled={true}>
-          <div style={{overflow: 'hidden'}}>
-            <p>{Text.text}</p>
-            <RaisedButton onClick={this.next.bind(this, 1)} style={{float:  'left', width: '40%', height: '300px', position: 'relative', margin: '5%'}}>
-              <div style={{position: 'absolute', top: '40%', left: '50%', width: '100%', margin: '-1.5em 0 0 -50%'}}>
-                <h5>{Text.title[0]}</h5>
-                <p>{Text.question[0]}</p>
-              </div>
-            </RaisedButton>
-            <RaisedButton onClick={this.next.bind(this, 2)} style={{float: 'right', width: '40%', height: '300px', position: 'relative', margin: '5%'}} labelStyle={{position: 'absolute', top: '50%', left: '50%', width: '100%', margin: '-1.5em 0 0 -50%'}}>
-              <div style={{position: 'absolute', top: '40%', left: '50%', width: '100%', margin: '-1.5em 0 0 -50%'}}>
-                <h5>{Text.title[1]}</h5>
-                <p>{Text.question[1]}</p>
-              </div>
-            </RaisedButton>
-          </div>
-          <div style={{overflow: 'hidden'}}>
-            <p>{Text.text}</p>
-            <RaisedButton onClick={this.next.bind(this, 1)} style={{float:  'left', width: '40%', height: '300px', position: 'relative', margin: '5%'}}>
-              <div style={{position: 'absolute', top: '40%', left: '50%', width: '100%', margin: '-1.5em 0 0 -50%'}}>
-                <h5>{Text.title[0]}</h5>
-                <p>{Text.question[0]}</p>
-              </div>
-            </RaisedButton>
-            <RaisedButton onClick={this.next.bind(this, 2)} style={{float: 'right', width: '40%', height: '300px', position: 'relative', margin: '5%'}} labelStyle={{position: 'absolute', top: '50%', left: '50%', width: '100%', margin: '-1.5em 0 0 -50%'}}>
-              <div style={{position: 'absolute', top: '40%', left: '50%', width: '100%', margin: '-1.5em 0 0 -50%'}}>
-                <h5>{Text.title[1]}</h5>
-                <p>{Text.question[1]}</p>
-              </div>
-            </RaisedButton>
-          </div>
-        </SwipeableViews>
+        <h5>{Question}</h5>
+        <div
+          style={{
+            display: "inline-block",
+            padding: "0%",
+            position: "relative",
+            left: this.state.value * 100 / (question_text.max - question_text.min) + "%",
+            transform: "translate(-50%, 0%)",
+            width: "auto"
+          }}
+        >
+          <Chip
+            style={{
+              display: "inline-block"
+            }}
+            onTouchTap={this.add.bind(this, -1)}
+          >{"<"}</Chip>
+          <Chip
+            style={{
+              display: "inline-block"
+            }}
+            >{this.state.value}</Chip>
+          <Chip
+            style={{
+              display: "inline-block"
+            }}
+            onTouchTap={this.add.bind(this, 1)}
+          >{">"}</Chip>
+        </div>
+        <Slider
+          min={question_text.min}
+          max={question_text.max}
+          step={question_text.step}
+          value={this.state.value}
+          onChange={this.handleChange.bind(this)}
+          sliderStyle={{  marginTop: "1%", marginBottom: "1%",}}
+        />
+        <RaisedButton label={"送信"} onClick={this.submit.bind(this)} primary={true} />
       </div>
-    : <div><p>{Text.text}</p></div>
+    : <div><p>{Text}</p></div>
   }
 }
 

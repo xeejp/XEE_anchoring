@@ -1,21 +1,16 @@
-defmodule AllaisParadox.Participant do
-  alias AllaisParadox.Actions
+defmodule Anchoring.Participant do
+  alias Anchoring.Actions
 
   # Actions
   def fetch_contents(data, id) do
-#    if data.page == "waiting", do: data = data |> put_in([:participants, id, :active], true)
     Actions.update_participant_contents(data, id)
   end
 
-  def next_question(data, id, selected) do
-    data = data |> put_in([:participants, id, :sequence], selected["next"])
-    if selected["next"] == "question2" do
-      data = data |> put_in([:participants, id, :question1], selected["selected"])
-    else
-      data = data |> put_in([:participants, id, :question2], selected["selected"])
-                  |> Map.put(:answered, data.answered + 1)
-    end
-    Actions.next_question(data, id, selected)
+  def answer(data, id, selected) do
+    data = data |> put_in([:participants, id, :sequence], "answer")
+                    |> put_in([:participants, id, :answer], selected)
+                    |> Map.put(:answered, data.answered + 1)
+    Actions.answer(data, id, selected)
   end
 
   # Utilities

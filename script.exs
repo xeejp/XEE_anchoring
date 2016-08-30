@@ -1,4 +1,4 @@
-defmodule AllaisParadox do
+defmodule Anchoring do
   use Xee.ThemeScript
   require Logger
 
@@ -7,9 +7,9 @@ defmodule AllaisParadox do
   require_file "scripts/participant.exs"
   require_file "scripts/actions.exs"
 
-  alias AllaisParadox.Main
-  alias AllaisParadox.Host
-  alias AllaisParadox.Participant
+  alias Anchoring.Main
+  alias Anchoring.Host
+  alias Anchoring.Participant
 
   # Callbacks
   def script_type do
@@ -31,7 +31,6 @@ defmodule AllaisParadox do
 
   # Host router
   def handle_received(data, %{"action" => action, "params" => params}) do
-#    Logger.debug("[Allais Paradox] #{action} #{params}")
     result = case {action, params} do
       {"fetch contents", _} -> Host.fetch_contents(data)
       {"change page", page} -> Host.change_page(data, page)
@@ -45,10 +44,9 @@ defmodule AllaisParadox do
 
   # Participant router
   def handle_received(data, %{"action" => action, "params" => params}, id) do
-#    Logger.debug("[Allais Paradox] #{action} #{params}")
     result = case {action, params} do
       {"fetch contents", _} -> Participant.fetch_contents(data, id)
-      {"next question", selected} -> Participant.next_question(data, id, selected)
+      {"answer", selected} -> Participant.answer(data, id, selected)
       _ -> {:ok, %{"data" => data}}
     end
     wrap_result(result)

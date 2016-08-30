@@ -1,6 +1,6 @@
-defmodule AllaisParadox.Actions do
-  alias AllaisParadox.Participant
-  alias AllaisParadox.Host
+defmodule Anchoring.Actions do
+  alias Anchoring.Participant
+  alias Anchoring.Host
 
   def change_page(data, page) do
     action = get_action("change page", page)
@@ -8,9 +8,7 @@ defmodule AllaisParadox.Actions do
   end
 
   def join(data, id, participant) do
-#    if data.page == "waiting" do
-      data = data |> Map.put(:joined, data.joined + 1)
-#    end
+    data = data |> Map.put(:joined, data.joined + 1)
     haction = get_action("join", %{id: id, participant: participant, joined: data.joined})
     paction = get_action("joined", Map.size(data.participants))
     format(data, haction, dispatch_to_all(data, paction))
@@ -22,23 +20,20 @@ defmodule AllaisParadox.Actions do
   end
 
   def all_reset(data) do
-    haction = get_action("reset", %{ participants: data.participants, joined: data.joined, answered: data.answered, rational: 0, irational: 0, })
+    haction = get_action("reset", %{ participants: data.participants, joined: data.joined, answered: data.answered })
     paction = get_action("reset", %{
          question_text: data.question_text,
-          sequence: "question1",
-          question1: 0,
-          question2: 0,
+          sequence: "question",
           active: true,
           joined: Map.size(data.participants)
         })
-    allaction = Enum.reduce(data.participants, %{}, fn {id, value}, acc -> dispatch_to(acc, id, Map.put(paction, :payload, Map.put(paction.payload, :qswap, value.qswap))) end)
-    format(data, haction, allaction)
+    all = Enum.reduce(data.participants, %{}, fn {id, value}, acc -> dispatch_to(acc, id, paction |> put_in([:payload, :answer], value.answer) |> put_in([:payload, :sdef], value.sdef)) end)
+    format(data, haction, all)
   end
 
   def send_result(data, result) do
-    haction = get_action("result", result)
     paction = get_action("result", result)
-    format(data, haction, dispatch_to_all(data, paction))
+    format(data, nil, dispatch_to_all(data, paction))
   end
 
   def update_question(data, question_text) do
@@ -52,9 +47,9 @@ defmodule AllaisParadox.Actions do
     format(data, nil, participant)
   end
 
-  def next_question(data, id, selected) do
-    paction = get_action("next question", selected)
+  def answer(data, id, selected) do
     haction = get_action("answer", %{id: id, participant: data.participants[id], answered: data.answered})
+    paction = get_action("answered", %{ sequence: "answer", answer: selected })
     format(data, haction, dispatch_to(id, paction))
   end
 

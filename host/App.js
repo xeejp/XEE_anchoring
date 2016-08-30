@@ -10,8 +10,8 @@ import Users from './Users'
 
 import Chart from 'components/Chart'
 
-const mapStateToProps = ({loading, page, participants}) => ({
-  loading, page, participants
+const mapStateToProps = ({loading, participants}) => ({
+  loading, participants
 })
 
 class App extends Component {
@@ -26,13 +26,11 @@ class App extends Component {
   }
 
   render() {
-    const { loading, page, participants } = this.props
-    var ans = [[0, 0], [0, 0]]
-    if(participants != undefined){
-      for(var i in participants) {
-        if(participants[i].question2 != 0){
-          ans[participants[i].question1 - 1][participants[i].question2 - 1]++
-        }
+    const { loading, participants } = this.props
+    var data = new Array()
+    for(var i in participants){
+      if(participants[i].sequence == "answer"){
+        data.push([participants[i].sdef, participants[i].answer])
       }
     }
     if (loading) {
@@ -43,7 +41,7 @@ class App extends Component {
           <PageButtons />
           <Information />
           <Users /><br />
-         <Chart oneone={ans[0][0]} onetwo={ans[0][1]} twoone={ans[1][0]} twotwo={ans[1][1]} expanded={false} /><br />
+          <Chart data={data} expanded={false} />
           <EditQuestion />
         </div>
       )

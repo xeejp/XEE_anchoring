@@ -10,7 +10,7 @@ const mapStateToProps = ({ joined, question_text }) => ({
 
 const Waiting = ({ joined, question_text }) => (
 	<Card>
-		<CardTitle title="アレのパラドクス" subtitle="待機画面" />
+		<CardTitle title="アンカリング" subtitle="待機画面" />
 		<CardText>
 			{question_text['waiting_text'].split('\n').map( line => <p>{line}</p>)}
 		</CardText>
