@@ -18,7 +18,7 @@ class Chart extends Component {
   }
   
   render() {
-    const { data, question_text } = this.props
+    const { data: [data, beta, t], question_text } = this.props
     return (
     <Card
       expanded={this.state.expanded}
@@ -35,6 +35,9 @@ class Chart extends Component {
         chart: {
             type: 'scatter',
             zoomType: 'xy'
+        },
+        credits : {
+            enabled: false,
         },
         title: {
             text: '実験結果'
@@ -88,11 +91,27 @@ class Chart extends Component {
             },
        },
         series: [{
+            type: 'line',
+            name: '回帰直線',
+            data: beta,
+            marker: {
+                enabled: false
+            },
+            states: {
+                hover: {
+                    lineWidth: 0
+                }
+            },
+            enableMouseTracking: false
+        },{
+            type: 'scatter',
             name: '回答',
             color: 'rgba(70, 70, 230, .5)',
             data: data
         }]
     }} />
+    <p>切片のt値: {t[0]}</p>
+    <p>傾きのt値: {t[1]}</p>
       </CardText>
     </Card>
   )

@@ -7,7 +7,7 @@ defmodule Anchoring.Participant do
   end
 
   def answer(data, id, selected) do
-    data = data |> put_in([:participants, id, :sequence], "answer")
+    data = data |> put_in([:participants, id, :sequence], "answered")
                     |> put_in([:participants, id, :answer], selected)
                     |> Map.put(:answered, data.answered + 1)
     Actions.answer(data, id, selected)

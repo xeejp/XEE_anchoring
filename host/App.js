@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 
 import { fetchContents } from './actions'
 
+import { calcResult } from './calcResult'
+
 import PageButtons from './PageButtons'
 import EditQuestion from './EditQuestion'
 import Information from './Information'
@@ -27,12 +29,6 @@ class App extends Component {
 
   render() {
     const { loading, participants } = this.props
-    var data = new Array()
-    for(var i in participants){
-      if(participants[i].sequence == "answer"){
-        data.push([participants[i].sdef, participants[i].answer])
-      }
-    }
     if (loading) {
       return <p>ロード中です。</p>
     } else {
@@ -41,7 +37,7 @@ class App extends Component {
           <PageButtons />
           <Information />
           <Users /><br />
-          <Chart data={data} expanded={false} />
+          <Chart data={calcResult(participants)} expanded={false} /><br />
           <EditQuestion />
         </div>
       )

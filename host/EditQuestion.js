@@ -29,10 +29,10 @@ class EditQuestion extends Component {
         'question': "国連でアフリカ諸国が占める割合は何％か？",
         'answered': "回答は終了しました。",
         'waiting_text': "参加者の登録を待っています。\nこの画面のまましばらくお待ちください。",
-        min: 0,
-        step: 1,
-        max: 100,
-        unit: "%"
+        'min': 0,
+        'step': 1,
+        'max': 100,
+        'unit': "%"
       }
     }
   }

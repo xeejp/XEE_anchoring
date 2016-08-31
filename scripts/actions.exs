@@ -49,7 +49,7 @@ defmodule Anchoring.Actions do
 
   def answer(data, id, selected) do
     haction = get_action("answer", %{id: id, participant: data.participants[id], answered: data.answered})
-    paction = get_action("answered", %{ sequence: "answer", answer: selected })
+    paction = get_action("answered", %{ sequence: "answered", answer: selected })
     format(data, haction, dispatch_to(id, paction))
   end
 

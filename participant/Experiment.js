@@ -45,7 +45,7 @@ class Experiment extends Component {
             display: "inline-block",
             padding: "0%",
             position: "relative",
-            left: this.state.value * 100 / (question_text.max - question_text.min) + "%",
+            left: (this.state.value - question_text["min"]) * 100 / (question_text["max"] - question_text["min"]) + "%",
             transform: "translate(-50%, 0%)",
             width: "auto"
           }}

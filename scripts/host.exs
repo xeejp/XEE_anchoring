@@ -22,8 +22,12 @@ defmodule Anchoring.Host do
   def all_reset(data) do
     :random.seed(:os.timestamp)
     flag = true
+    [max, min] = case [data.question_text["max"], data.question_text["min"]] do
+      [nil, nil] -> [data.question_text.max, data.question_text.min]
+      _           -> [data.question_text["max"], data.question_text["min"]]
+    end
     data = data |> Map.put(:participants, Enum.into(Enum.map(data.participants, fn { id, _ } ->
-      rnd = :random.uniform(data.question_text["max"] - data.question_text["min"]) - data.question_text["min"]
+      rnd = :random.uniform(max - min) + min
       {id,
         %{
           question_text: data.question_text,
