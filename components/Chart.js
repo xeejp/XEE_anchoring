@@ -110,8 +110,6 @@ class Chart extends Component {
             data: data
         }]
     }} />
-    <p>切片のt値: {t[0]}</p>
-    <p>傾きのt値: {t[1]}</p>
       </CardText>
     </Card>
   )
