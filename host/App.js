@@ -7,7 +7,6 @@ import { calcResult } from './calcResult'
 
 import PageButtons from './PageButtons'
 import EditQuestion from './EditQuestion'
-import Information from './Information'
 import Users from './Users'
 
 import Chart from 'components/Chart'
@@ -35,7 +34,6 @@ class App extends Component {
       return (
         <div>
           <PageButtons />
-          <Information />
           <Users /><br />
           <Chart data={calcResult(participants)} expanded={false} /><br />
           <EditQuestion />

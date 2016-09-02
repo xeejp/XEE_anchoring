@@ -1,1 +1,1 @@
-# Allais Paradox
+# Anchoring

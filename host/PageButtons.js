@@ -52,7 +52,7 @@ class PageButtons extends Component {
           {buttons}
         </Stepper>
         <RaisedButton onClick={this.backPage.bind(this)} style={{ marginLeft: '3%' }}>戻る</RaisedButton>
-        <RaisedButton onClick={this.nextPage.bind(this)} primary={true}>次へ</RaisedButton>
+        <RaisedButton onClick={this.nextPage.bind(this)} primary={true} style={{ marginLeft: '3%' }}>次へ</RaisedButton>
       </span>
     )
   }
