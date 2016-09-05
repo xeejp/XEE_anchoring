@@ -20,7 +20,7 @@ const UsersList = ({participants, page }) => (
           <User
             key={id}
             id={id}
-            status={(page == "waiting" || !participants[id].active)? "待機中" : {"question": "回答中", "answered": "回答済み"}[participants[id].sequence]}
+            status={(page == "waiting" || !participants[id].active)? "待機中" : (page == "result")? "結果を表示" : {"question": "回答中", "answered": "回答済み"}[participants[id].sequence]}
           />
         ))
       }
@@ -32,7 +32,7 @@ const Users = ({ participants, page }) => (
   <div>
     <Card>
       <CardHeader
-        title={"Users (" + Object.keys(participants).length + "人)"}
+        title={"登録者 " + Object.keys(participants).length + "人"}
         actAsExpander={true}
         showExpandableButton={true}
       />
