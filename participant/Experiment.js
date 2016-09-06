@@ -39,7 +39,7 @@ class Experiment extends Component {
     const Text = question_text[sequence]
     return (sequence != "answered")?
       <div style={{height: 'auto'}}>
-        <h5>{Question}</h5>
+        {Question.split('\n').map( line => <h5>{line}</h5>)}
         <div
           style={{
             display: "inline-block",
