@@ -14,7 +14,7 @@ defmodule Anchoring.Main do
       joined: 0,
       answered: 0,
       question_text: %{
-        'question': "国連でアフリカ諸国が占める割合は何％か？",
+        'question': "国連加盟国のうち、アフリカ大陸の国は何パーセントを占めていると思いますか。",
         'answered': "回答は終了しました。",
         'waiting_text': "参加者の登録を待っています。\nこの画面のまましばらくお待ちください。",
         'min': 0,

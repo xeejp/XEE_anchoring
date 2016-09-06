@@ -13,6 +13,7 @@ const Waiting = ({ joined, question_text }) => (
 		<CardTitle title="アンカリング" subtitle="待機画面" />
 		<CardText>
 			{question_text['waiting_text'].split('\n').map( line => <p>{line}</p>)}
+		<p>現在{joined}人が参加しています。</p>
 		</CardText>
 		<div style={{textAlign: "center"}}>
 			<CircularProgress size={2}/>
