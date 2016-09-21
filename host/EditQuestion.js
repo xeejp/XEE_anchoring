@@ -2,15 +2,15 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import {Tabs, Tab} from 'material-ui/Tabs'
-import {Card} from 'material-ui/Card'
 import SwipeableViews from 'react-swipeable-views'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ImageEdit from 'material-ui/svg-icons/image/edit'
-import FlatButton from 'material-ui/RaisedButton'
+import RaisedButton from 'material-ui/RaisedButton'
 import Dialog from 'material-ui/Dialog'
 import TextField from 'material-ui/TextField'
+import Snackbar from 'material-ui/Snackbar'
 
-import { updateQuestion } from './actions'
+import { updateQuestion, fetchContents } from './actions'
 
 const mapStateToProps = ({ question_text, page }) => ({
   question_text, page
@@ -23,6 +23,8 @@ class EditQuestion extends Component {
     this.state = {
       question_text: question_text,
       open: false,
+      snack: false,
+      message: "設定を送信しました。",
       mainSlideIndex: 0,
       disabled: false,
       default_text: {
@@ -81,7 +83,13 @@ class EditQuestion extends Component {
   }
 
   handleOpen() {
-    this.setState({ open: true });
+    const { dispatch } = this.props
+    dispatch(fetchContents())
+    this.setState({
+      open: true,
+      question_text: this.props.question_text,
+      mainSlideIndex: 0,
+    })
   }
 
   handleClose() {
@@ -123,33 +131,47 @@ class EditQuestion extends Component {
     })
   }
 
+  handleRequestClose() {
+    this.setState({ snack: false })
+  }
+
   submit() {
+    this.setState({
+      open: false,
+      snack: true,
+      message: "設定を送信しました。"
+    })
     const { dispatch } = this.props
     dispatch(updateQuestion(this.state.question_text))
-    this.setState({ open: false })
   }
 
   reset(){
+    this.setState({
+      question_text: this.state.default_text,
+      open: false,
+      snack: true,
+      message: "設定を初期化しました。",
+      disabled: false,
+    })
     const { dispatch } = this.props
     dispatch(updateQuestion(this.state.default_text))
-    this.setState({ question_text: this.state.default_text, open: false, disabled: false })
   }
 
   render(){
     const { page } = this.props
     const actions = [
-      <FlatButton
+      <RaisedButton
         label="適用"
         disabled={this.state.disabled}
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.submit.bind(this)}
       />,
-      <FlatButton
+      <RaisedButton
         label="キャンセル"
         onTouchTap={this.handleClose.bind(this)}
       />,
-     <FlatButton
+     <RaisedButton
         label="すべてリセット"
         onTouchTap={this.reset.bind(this)}
       />,
@@ -163,7 +185,6 @@ class EditQuestion extends Component {
         actions={actions}
         modal={false}
         open={this.state.open}
-        onRequestClose={this.handleClose.bind(this)}
         autoScrollBodyContent={this.state.mainSlideIndex == 1}
       >
         <Tabs
@@ -181,6 +202,12 @@ class EditQuestion extends Component {
          {this.QuestionTab()}
       </SwipeableViews>
       </Dialog>
+      <Snackbar
+        open={this.state.snack}
+        message={this.state.message}
+        autoHideDuration={2000}
+        onRequestClose={this.handleRequestClose.bind(this)}
+      />
     </div>)
   }
 }
