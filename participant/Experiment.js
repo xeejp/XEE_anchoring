@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import Slider from 'material-ui/Slider'
 import Chip from 'material-ui/Chip'
 import RaisedButton from 'material-ui/RaisedButton'
+import { Card, CardText } from 'material-ui/Card'
 
 import { answer } from './actions'
 
@@ -38,8 +39,9 @@ class Experiment extends Component {
     const Question = question_text["question"]
     const Text = question_text[sequence]
     return (sequence != "answered")?
+    <Card><CardText>
       <div style={{height: 'auto'}}>
-        {Question.split('\n').map( line => <h5>{line}</h5>)}
+        <div style={{marginBottom: "5%"}}>{Question.split('\n').map( line => <h5>{line}</h5>)}</div>
         <div
           style={{
             display: "inline-block",
@@ -47,7 +49,7 @@ class Experiment extends Component {
             position: "relative",
             left: (this.state.value - question_text["min"]) * 100 / (question_text["max"] - question_text["min"]) + "%",
             transform: "translate(-50%, 0%)",
-            width: "auto"
+            width: "auto",
           }}
         >
           <Chip
@@ -76,9 +78,10 @@ class Experiment extends Component {
           onChange={this.handleChange.bind(this)}
           sliderStyle={{  marginTop: "1%", marginBottom: "1%",}}
         />
-        <RaisedButton label={"送信"} onClick={this.submit.bind(this)} primary={true} />
+        <RaisedButton label={"送信"} onClick={this.submit.bind(this)} primary={true} style={{marginTop: "5%"}} />
       </div>
-    : <div><p>{Text}</p></div>
+      </CardText></Card>
+    : <div><Card><CardText><p>{Text}</p></CardText></Card></div>
   }
 }
 
