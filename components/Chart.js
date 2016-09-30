@@ -1,5 +1,6 @@
 ﻿import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import throttle from 'react-throttle-render'
 
 import { Card, CardHeader, CardText } from 'material-ui/Card'
 import Highcharts from 'react-highcharts'
@@ -12,11 +13,11 @@ class Chart extends Component {
     const { expanded } = this.props
     this.state = { expanded: expanded }
   }
-  
+
   handleExpandChange(expanded) {
     this.setState({ expanded: expanded })
   }
-  
+
   render() {
     const { data: [data, beta, t], question_text } = this.props
     return (
@@ -116,4 +117,4 @@ class Chart extends Component {
   }
 }
 
-export default connect(mapStateToProps)(Chart)
+export default connect(mapStateToProps)(throttle(Chart, 200))
