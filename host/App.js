@@ -8,6 +8,7 @@ import { calcResult } from './calcResult'
 import Divider from 'material-ui/Divider'
 
 import PageButtons from './PageButtons'
+import Config from './Config'
 import EditQuestion from './EditQuestion'
 import DownloadButton from './DownloadButton'
 import Users from './Users'
@@ -45,6 +46,7 @@ class App extends Component {
           />
           <Users /><br />
           <Chart data={calcResult(participants)} expanded={false} /><br />
+          <Config />
           <EditQuestion />
           <DownloadButton
             fileName={"anchoring.csv"}
