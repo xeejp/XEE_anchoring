@@ -12,6 +12,8 @@ import Snackbar from 'material-ui/Snackbar'
 
 import { updateQuestion, fetchContents } from './actions'
 
+import { ReadJSON } from '../util/ReadJSON'
+
 const mapStateToProps = ({ question_text, page }) => ({
   question_text, page
 })
@@ -20,22 +22,20 @@ class EditQuestion extends Component {
   constructor(props){
     super(props)
     const { question_text } = this.props
+    var default_text = question_text
+    if(!question_text) {
+      default_text = ReadJSON().dynamic_text
+      const { dispatch } = this.props
+      dispatch(updateQuestion(default_text))
+    }
     this.state = {
-      question_text: question_text,
+      question_text: default_text,
       open: false,
       snack: false,
       message: "設定を送信しました。",
       mainSlideIndex: 0,
       disabled: false,
-      default_text: {
-        'question': "国連加盟国のうち、アフリカ大陸の国は何パーセントを占めていると思いますか。",
-        'answered': "回答は終了しました。",
-        'waiting_text': "参加者の登録を待っています。\nこの画面のまましばらくお待ちください。",
-        'min': 0,
-        'step': 1,
-        'max': 100,
-        'unit': "%"
-      }
+      default_text: ReadJSON().dynamic_text
     }
   }
 
