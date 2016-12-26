@@ -23,6 +23,7 @@ class EditQuestion extends Component {
     super(props)
     const { question_text } = this.props
     var default_text = question_text
+    var static_text = ReadJSON().static_text
     if(!question_text) {
       default_text = ReadJSON().dynamic_text
       const { dispatch } = this.props
@@ -30,9 +31,10 @@ class EditQuestion extends Component {
     }
     this.state = {
       question_text: default_text,
+      static_text: static_text,
       open: false,
       snack: false,
-      message: "設定を送信しました。",
+      message: static_text["editquestion"]["send_message"],
       mainSlideIndex: 0,
       disabled: false,
       default_text: ReadJSON().dynamic_text
@@ -43,24 +45,24 @@ class EditQuestion extends Component {
     return (
       <div style={{height: '100%', position: 'relative'}}>
         <TextField
-         hintText={"問題"}
+         hintText={this.state.static_text["editquestion"]["question"]}
          defaultValue={this.state.question_text["question"]}
          onBlur={this.handleChange.bind(this, ["question"])}
          multiLine={true}
          fullWidth={true}
        /><br />
-       <p>スライダーの設定</p><br />
+       <p>{this.state.static_text["editquestion"]["slider_setting"]}</p><br />
         <TextField
-         hintText={"最小値"}
+         hintText={this.state.static_text["editquestion"]["min"]}
          defaultValue={this.state.question_text["min"]}
          onChange={this.handleChangeOnlyNum.bind(this, ["min"])}
-       /> から <TextField
-         hintText={"最大値"}
+       /> {this.state.static_text["editquestion"]["from"]} <TextField
+         hintText={this.state.static_text["editquestion"]["max"]}
          defaultValue={this.state.question_text["max"]}
          onChange={this.handleChangeOnlyNum.bind(this, ["max"])}
-       /> まで<br />
-       (単位:<TextField
-         hintText={"単位"}
+       /> {this.state.static_text["editquestion"]["to"]}<br />
+       ({this.state.static_text["editquestion"]["unit1"]}<TextField
+         hintText={this.state.static_text["editquestion"]["unit2"]}
          defaultValue={this.state.question_text["unit"]}
          onChange={this.handleChange.bind(this, ["unit"])}
        />)
@@ -72,7 +74,7 @@ class EditQuestion extends Component {
     return (
       <div style={{height: '100%', position: 'relative'}}>
         <TextField
-         hintText={"待機画面に表示するテキスト"}
+         hintText={this.state.static_text["editquestion"]["waiting_text"]}
          defaultValue={this.state.question_text["waiting_text"]}
          onBlur={this.handleChange.bind(this, ["waiting_text"])}
          multiLine={true}
@@ -139,7 +141,7 @@ class EditQuestion extends Component {
     this.setState({
       open: false,
       snack: true,
-      message: "設定を送信しました。"
+      message: this.state.static_text["editquestion"]["send_message"]
     })
     const { dispatch } = this.props
     dispatch(updateQuestion(this.state.question_text))
@@ -150,7 +152,7 @@ class EditQuestion extends Component {
       question_text: this.state.default_text,
       open: false,
       snack: true,
-      message: "設定を初期化しました。",
+      message: this.state.static_text["editquestion"]["reset_message"],
       disabled: false,
     })
     const { dispatch } = this.props
@@ -161,18 +163,18 @@ class EditQuestion extends Component {
     const { page } = this.props
     const actions = [
       <RaisedButton
-        label="適用"
+        label={this.state.static_text["editquestion"]["apply"]}
         disabled={this.state.disabled}
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.submit.bind(this)}
       />,
       <RaisedButton
-        label="キャンセル"
+        label={this.state.static_text["editquestion"]["cancel"]}
         onTouchTap={this.handleClose.bind(this)}
       />,
      <RaisedButton
-        label="すべてリセット"
+        label={this.state.static_text["editquestion"]["reset"]}
         onTouchTap={this.reset.bind(this)}
       />,
     ]
@@ -181,7 +183,7 @@ class EditQuestion extends Component {
          <ImageEdit />
       </FloatingActionButton>
       <Dialog
-        title="編集画面"
+        title={this.state.static_text["editquestion"]["editor"]}
         actions={actions}
         modal={false}
         open={this.state.open}
@@ -191,8 +193,8 @@ class EditQuestion extends Component {
           onChange={this.handleMainSlide.bind(this)}
           value={this.state.mainSlideIndex}
         >
-          <Tab label="待機画面" value={0}/>
-          <Tab label="問題画面" value={1}/>
+          <Tab label={this.state.static_text["waiting"]} value={0}/>
+          <Tab label={this.state.static_text["editquestion"]["question_page"]} value={1}/>
         </Tabs>
         <SwipeableViews
           index={this.state.mainSlideIndex}

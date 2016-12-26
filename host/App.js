@@ -15,6 +15,8 @@ import Users from './Users'
 
 import Chart from 'components/Chart'
 
+import { ReadJSON } from '../util/ReadJSON'
+
 const mapStateToProps = ({loading, participants, question_text, page}) => ({
   loading, participants, question_text, page
 })
@@ -32,8 +34,9 @@ class App extends Component {
 
   render() {
     const { loading, participants, question_text, page } = this.props
+    const text = ReadJSON().static_text
     if (loading) {
-      return <p>ロード中です。</p>
+      return <p>{text["loading"]}</p>
     } else {
       return (
         <div>
@@ -51,12 +54,12 @@ class App extends Component {
           <DownloadButton
             fileName={"anchoring.csv"}
             list={[
-              ["アンカリングと修正"],
-              ["実験日", new Date()],
-              ["登録者数", Object.keys(participants).length],
-              ["ID", "初期値", "回答"],
+              [text["title"]],
+              [text["app"]["date"], new Date()],
+              [text["app"]["people"], Object.keys(participants).length],
+              [text["app"]["id"], text["app"]["init_value"], text["app"]["answer"]],
             ].concat(
-              Object.keys(participants).map(id => [id, participants[id].sdef + question_text["unit"], (participants[id].answer != -1)? participants[id].answer + question_text["unit"] : "未回答"])
+              Object.keys(participants).map(id => [id, participants[id].sdef + question_text["unit"], (participants[id].answer != -1)? participants[id].answer + question_text["unit"] : text["app"]["no_answer"]])
             )}
             disabled={page != "result"}
             style={{marginLeft: '2%'}}

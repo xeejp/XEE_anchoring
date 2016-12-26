@@ -5,6 +5,8 @@ import { fetchContents } from './actions'
 
 import Pages from './Pages'
 
+import { ReadJSON } from '../util/ReadJSON'
+
 const mapStateToProps = ({ loading}) => ({
   loading,
 })
@@ -23,7 +25,7 @@ class App extends Component {
   render() {
     const { loading } = this.props
     if (loading) {
-      return <p>ロード中です。</p>
+      return <p>{ReadJSON().static_text["loading"]}</p>
     } else {
       return (
         <div>

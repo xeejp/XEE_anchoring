@@ -4,6 +4,7 @@ import throttle from 'react-throttle-render'
 
 import { Card, CardHeader, CardText } from 'material-ui/Card'
 import Highcharts from 'react-highcharts'
+import { ReadJSON } from '../util/ReadJSON'
 
 const mapStateToProps = ({ question_text }) => ({ question_text })
 
@@ -20,6 +21,7 @@ class Chart extends Component {
 
   render() {
     const { data: [data, beta, t], question_text } = this.props
+    var text = ReadJSON().static_text["comp_chart"]
     if(!question_text) return null
     return (
     <Card
@@ -27,7 +29,7 @@ class Chart extends Component {
       onExpandChange={this.handleExpandChange.bind(this)}
     >
       <CardHeader
-        title={"実験結果"}
+        title={text["title"]}
         actAsExpander={true}
         showExpandableButton={true}
       />
@@ -42,12 +44,12 @@ class Chart extends Component {
             enabled: false,
         },
         title: {
-            text: '実験結果'
+            text: text["title"]
         },
         xAxis: {
             title: {
                 enabled: true,
-                text: '初期位置 [' + question_text['unit'] + ']'
+                text: text["init_place"][0] + question_text['unit'] + text["init_place"][1]
             },
             startOnTick: true,
             endOnTick: true,
@@ -55,7 +57,7 @@ class Chart extends Component {
         },
         yAxis: {
             title: {
-                text: '回答 [' + question_text['unit'] + ']'
+                text: text["answer"][0] + question_text['unit'] + text["answer"][1]
             }
         },
         legend: {
@@ -88,13 +90,13 @@ class Chart extends Component {
                 },
                 tooltip: {
                     headerFormat: '<b>{series.name}</b><br>',
-                    pointFormat: '{point.x} から {point.y}'
+                    pointFormat: '{point.x} {text["from"]} {point.y}'
                 }
             },
        },
         series: [{
             type: 'line',
-            name: '回帰直線',
+            name: text["reg_line"],
             data: beta,
             marker: {
                 enabled: false
@@ -107,7 +109,7 @@ class Chart extends Component {
             enableMouseTracking: false
         },{
             type: 'scatter',
-            name: '回答',
+            name: text["ans"],
             color: 'rgba(70, 70, 230, .5)',
             data: data
         }]

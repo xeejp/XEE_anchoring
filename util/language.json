@@ -8,5 +8,80 @@
         "max": 100,
         "unit": "%"
       },
-  "static_text":{}
+  "static_text":{
+    "loading": "ロード中です。",
+    "title": "アンカリングと修正",
+    "waiting": "待機画面",
+    "app": {
+      "date": "実験日",
+      "people": "登録者数",
+      "id": "ID",
+      "init_value": "初期値",
+      "answer": "回答",
+      "no_answer": "未回答"
+    },
+    "page_button": {
+      "back": "戻る",
+      "next": "次へ"
+    },
+    "config": {
+      "no_setting": "設定項目なし"
+    },
+    "users": {
+      "id": "id",
+      "status": "status",
+      "waiting": "待機中",
+      "result": "結果を表示",
+      "question": "回答中",
+      "answered": "回答済み",
+      "people": "登録者 ",
+      "person_unit": "人"
+    },
+    "editquestion": {
+      "send_message": "設定を送信しました。",
+      "question": "問題",
+      "slider_setting": "スライダーの設定",
+      "min": "最小値",
+      "from": "から",
+      "max": "最大値",
+      "to": "まで",
+      "unit1": "単位:",
+      "unit2": "単位",
+      "waiting_text": "待機画面に表示するテキスト",
+      "reset_message": "設定を初期化しました。",
+      "apply": "適用",
+      "cancel": "キャンセル",
+      "reset": "すべてリセット",
+      "editor": "編集画面",
+      "question_page": "問題画面"
+    },
+    "part_waiting": {
+      "joined": [
+        "現在",
+        "人が参加しています。"
+      ]
+    },
+    "part_experiment": {
+      "send": "送信"
+    },
+    "comp_chart": {
+      "title": "実験結果",
+      "init_place": [
+        "初期位置 [",
+        "]"
+      ],
+      "answer": [
+        "回答 [",
+        "]"
+      ],
+      "from": "から",
+      "reg_line": "回帰直線",
+      "ans": "回答"
+    },
+    "util_index": {
+      "waiting": "待機",
+      "experiment": "実験",
+      "result": "結果"
+    }
+  }
 }
